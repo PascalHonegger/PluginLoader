@@ -1,0 +1,38 @@
+﻿<Window x:Class="PluginViewer.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:PluginViewer"
+        xmlns:pluginContract="clr-namespace:PluginContract;assembly=PluginContract"
+        mc:Ignorable="d"
+        Title="MainWindow" MinHeight="300" MinWidth="200" Height="350" Width="525" d:DataContext="{d:DesignInstance local:MainWindowViewModel}">
+	<Grid>
+		<Grid.RowDefinitions>
+			<RowDefinition Height="Auto"/>
+			<RowDefinition />
+			<RowDefinition Height="Auto"/>
+		</Grid.RowDefinitions>
+		<Menu>
+			<MenuItem></MenuItem>
+		</Menu>
+
+		<ListView ItemsSource="{Binding Plugins}" Grid.Row="1" SelectedItem="{Binding SelectedPlugin}" >
+			<ListView.View>
+				<GridView>
+					<GridView.Columns>
+						<GridViewColumn Header="Logo">
+							<GridViewColumn.CellTemplate>
+								<DataTemplate DataType="pluginContract:IPlugin">
+									<Image Source="{Binding Image}" />
+								</DataTemplate>
+							</GridViewColumn.CellTemplate>
+						</GridViewColumn>
+						<GridViewColumn DisplayMemberBinding="{Binding Name}" Header="Name"/>
+					</GridView.Columns>
+				</GridView>
+			</ListView.View>
+		</ListView>
+		<Button Grid.Row="2" Command="{Binding OpenSelectedPlugin}" Height="50" Margin="20" Content="Open"/>
+	</Grid>
+</Window>

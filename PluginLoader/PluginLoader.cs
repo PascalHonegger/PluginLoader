@@ -16,13 +16,13 @@ namespace PluginLoader
 
 			var assemblies = dllFileNames.Select(AssemblyName.GetAssemblyName).Select(Assembly.Load);
 
-			var pluginType = typeof(T);
-			ICollection<Type> pluginTypes =
-				assemblies.Where(a => a != null)
-					.SelectMany(a => a.GetTypes())
-					.Where(t => t.IsClass && !t.IsAbstract)
-					.Where(type => pluginType.IsAssignableFrom(type))
-					.ToList();
+			var allTypes =
+				assemblies.Where(assembly => assembly != null)
+					.SelectMany(assembly => assembly.GetTypes());
+
+			var pluginTypes = allTypes
+				.Where(type => type.IsClass && !type.IsAbstract)
+				.Where(type => typeof(T).IsAssignableFrom(type));
 
 			return pluginTypes.Select(type => (T) Activator.CreateInstance(type)).ToList();
 		}

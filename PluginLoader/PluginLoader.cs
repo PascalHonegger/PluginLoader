@@ -14,7 +14,7 @@ namespace PluginLoader
 
 			var dllFileNames = Directory.GetFiles(path, "*.dll");
 
-			var assemblies = dllFileNames.Select(AssemblyName.GetAssemblyName).Select(Assembly.Load);
+			var assemblies = dllFileNames.Select(Assembly.LoadFile);
 
 			var allTypes =
 				assemblies.Where(assembly => assembly != null)
@@ -24,7 +24,7 @@ namespace PluginLoader
 				.Where(type => type.IsClass && !type.IsAbstract)
 				.Where(type => typeof(T).IsAssignableFrom(type));
 
-			return pluginTypes.Select(type => (T) Activator.CreateInstance(type)).ToList();
+			return pluginTypes.Select(type => (T) Activator.CreateInstance(type));
 		}
 	}
 }
